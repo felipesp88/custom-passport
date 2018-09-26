@@ -1,16 +1,16 @@
 {
-    "name": "laravel/passport",
-    "description": "Laravel Passport provides OAuth2 server support to Laravel.",
-    "keywords": ["laravel", "passport", "oauth"],
+    "name": "felipesp88/custom-passport",
+    "description": "Laravel Passport provides OpenIDConnect server support to Laravel with MongoDB Jenssegers.",
+    "keywords": ["laravel", "passport", "oauth", "openid"],
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/laravel/passport/issues",
-        "source": "https://github.com/laravel/passport"
+        "issues": "https://github.com/felipesp88/custom-passport/issues",
+        "source": "https://github.com/felipesp88/custom-passport"
     },
     "authors": [
         {
-            "name": "Taylor Otwell",
-            "email": "taylor@laravel.com"
+            "name": "Felipe Pinheiro",
+            "email": "filipe-pinheiro@hotmail.com"
         }
     ],
     "require": {
@@ -25,6 +25,7 @@
         "illuminate/encryption": "~5.6",
         "illuminate/http": "~5.6",
         "illuminate/support": "~5.6",
+        "jenssegers/mongodb": "^3.4",
         "league/oauth2-server": "^7.0",
         "phpseclib/phpseclib": "^2.0",
         "symfony/psr-http-message-bridge": "~1.0",
@@ -41,7 +42,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "6.0-dev"
+            "dev-master": "master"
         },
         "laravel": {
             "providers": [

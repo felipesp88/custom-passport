@@ -14,7 +14,7 @@ use Laravel\Passport\Guards\TokenGuard;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\ResourceServer;
 use Illuminate\Config\Repository as Config;
-use League\OAuth2\Server\AuthorizationServer;
+use Laravel\Passport\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
 use League\OAuth2\Server\Grant\PasswordGrant;
@@ -129,6 +129,7 @@ class PassportServiceProvider extends ServiceProvider
      * Create and configure an instance of the Auth Code grant.
      *
      * @return \League\OAuth2\Server\Grant\AuthCodeGrant
+     * @throws \Exception
      */
     protected function makeAuthCodeGrant()
     {
@@ -141,6 +142,7 @@ class PassportServiceProvider extends ServiceProvider
      * Build the Auth Code grant instance.
      *
      * @return \League\OAuth2\Server\Grant\AuthCodeGrant
+     * @throws \Exception
      */
     protected function buildAuthCodeGrant()
     {
@@ -186,6 +188,7 @@ class PassportServiceProvider extends ServiceProvider
      * Create and configure an instance of the Implicit grant.
      *
      * @return \League\OAuth2\Server\Grant\ImplicitGrant
+     * @throws \Exception
      */
     protected function makeImplicitGrant()
     {
@@ -195,7 +198,7 @@ class PassportServiceProvider extends ServiceProvider
     /**
      * Make the authorization service instance.
      *
-     * @return \League\OAuth2\Server\AuthorizationServer
+     * @return \Laravel\Passport\Server\AuthorizationServer
      */
     public function makeAuthorizationServer()
     {
@@ -226,7 +229,7 @@ class PassportServiceProvider extends ServiceProvider
     /**
      * Create a CryptKey instance without permissions check
      *
-     * @param string $key
+     * @param $type
      * @return \League\OAuth2\Server\CryptKey
      */
     protected function makeCryptKey($type)

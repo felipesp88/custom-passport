@@ -2,7 +2,7 @@
 
 namespace Laravel\Passport;
 
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model;
 
 class AuthCode extends Model
 {
@@ -11,7 +11,7 @@ class AuthCode extends Model
      *
      * @var string
      */
-    protected $table = 'oauth_auth_codes';
+    protected $collection = 'oauth_auth_codes';
 
     /**
      * The guarded attributes on the model.

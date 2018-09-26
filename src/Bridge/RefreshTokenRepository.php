@@ -62,7 +62,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     public function persistNewRefreshToken(RefreshTokenEntityInterface $refreshTokenEntity)
     {
         $this->database->table('oauth_refresh_tokens')->insert([
-            'id' => $id = $refreshTokenEntity->getIdentifier(),
+            '_id' => $id = $refreshTokenEntity->getIdentifier(),
             'access_token_id' => $accessTokenId = $refreshTokenEntity->getAccessToken()->getIdentifier(),
             'revoked' => false,
             'expires_at' => $refreshTokenEntity->getExpiryDateTime(),
@@ -77,7 +77,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     public function revokeRefreshToken($tokenId)
     {
         $this->database->table('oauth_refresh_tokens')
-                    ->where('id', $tokenId)->update(['revoked' => true]);
+                    ->where('_id', $tokenId)->update(['revoked' => true]);
     }
 
     /**
@@ -86,7 +86,7 @@ class RefreshTokenRepository implements RefreshTokenRepositoryInterface
     public function isRefreshTokenRevoked($tokenId)
     {
         $refreshToken = $this->database->table('oauth_refresh_tokens')
-                    ->where('id', $tokenId)->first();
+                    ->where('_id', $tokenId)->first();
 
         if ($refreshToken === null || $refreshToken->revoked) {
             return true;

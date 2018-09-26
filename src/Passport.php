@@ -44,7 +44,7 @@ class Passport
      * @var array
      */
     public static $scopes = [
-        //
+        'openid' => 'OpenID Token'
     ];
 
     /**
@@ -205,7 +205,7 @@ class Passport
      */
     public static function scopeIds()
     {
-        return static::scopes()->pluck('id')->values()->all();
+        return static::scopes()->pluck('_id')->values()->all();
     }
 
     /**
@@ -256,14 +256,15 @@ class Passport
      */
     public static function tokensCan(array $scopes)
     {
-        static::$scopes = $scopes;
+        static::$scopes = array_merge(static::$scopes, $scopes);
     }
 
     /**
      * Get or set when access tokens expire.
      *
-     * @param  \DateTimeInterface|null  $date
+     * @param  \DateTimeInterface|null $date
      * @return \DateInterval|static
+     * @throws \Exception
      */
     public static function tokensExpireIn(DateTimeInterface $date = null)
     {

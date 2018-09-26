@@ -17,4 +17,8 @@ return [
 
     'public_key' => env('PASSPORT_PUBLIC_KEY'),
 
+    'special_claims' => [
+        //
+    ]
+
 ];

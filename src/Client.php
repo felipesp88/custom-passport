@@ -2,7 +2,7 @@
 
 namespace Laravel\Passport;
 
-use Illuminate\Database\Eloquent\Model;
+use Jenssegers\Mongodb\Eloquent\Model;
 
 class Client extends Model
 {
@@ -11,7 +11,7 @@ class Client extends Model
      *
      * @var string
      */
-    protected $table = 'oauth_clients';
+    protected $collection = 'oauth_clients';
 
     /**
      * The guarded attributes on the model.
@@ -39,6 +39,7 @@ class Client extends Model
         'personal_access_client' => 'bool',
         'password_client' => 'bool',
         'revoked' => 'bool',
+        'secondary' => 'bool'
     ];
 
     /**

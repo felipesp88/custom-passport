@@ -3,7 +3,6 @@
 namespace Laravel\Passport;
 
 use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
 
 class TokenRepository
 {
@@ -26,7 +25,7 @@ class TokenRepository
      */
     public function find($id)
     {
-        return Passport::token()->where('id', $id)->first();
+        return Passport::token()->where('_id', $id)->first();
     }
 
     /**
@@ -38,7 +37,7 @@ class TokenRepository
      */
     public function findForUser($id, $userId)
     {
-        return Passport::token()->where('id', $id)->where('user_id', $userId)->first();
+        return Passport::token()->where('_id', $id)->where('user_id', $userId)->first();
     }
 
     /**
@@ -87,7 +86,7 @@ class TokenRepository
      */
     public function revokeAccessToken($id)
     {
-        return Passport::token()->where('id', $id)->update(['revoked' => true]);
+        return Passport::token()->where('_id', $id)->update(['revoked' => true]);
     }
 
     /**

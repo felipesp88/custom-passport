@@ -4,15 +4,15 @@ namespace Laravel\Passport;
 
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequest;
+use Laravel\Passport\Server\AuthorizationServer;
 use Lcobucci\JWT\Parser as JwtParser;
-use League\OAuth2\Server\AuthorizationServer;
 
 class PersonalAccessTokenFactory
 {
     /**
      * The authorization server instance.
      *
-     * @var \League\OAuth2\Server\AuthorizationServer
+     * @var \Laravel\Passport\Server\AuthorizationServer
      */
     protected $server;
 
@@ -40,7 +40,7 @@ class PersonalAccessTokenFactory
     /**
      * Create a new personal access token factory instance.
      *
-     * @param  \League\OAuth2\Server\AuthorizationServer  $server
+     * @param  \Laravel\Passport\Server\AuthorizationServer  $server
      * @param  \Laravel\Passport\ClientRepository  $clients
      * @param  \Laravel\Passport\TokenRepository  $tokens
      * @param  \Lcobucci\JWT\Parser  $jwt
@@ -95,7 +95,7 @@ class PersonalAccessTokenFactory
     {
         return (new ServerRequest)->withParsedBody([
             'grant_type' => 'personal_access',
-            'client_id' => $client->id,
+            'client_id' => $client->_id,
             'client_secret' => $client->secret,
             'user_id' => $userId,
             'scope' => implode(' ', $scopes),
@@ -105,8 +105,9 @@ class PersonalAccessTokenFactory
     /**
      * Dispatch the given request to the authorization server.
      *
-     * @param  \Zend\Diactoros\ServerRequest  $request
+     * @param  \Zend\Diactoros\ServerRequest $request
      * @return array
+     * @throws \League\OAuth2\Server\Exception\OAuthServerException
      */
     protected function dispatchRequestToAuthorizationServer(ServerRequest $request)
     {

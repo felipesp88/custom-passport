@@ -31,8 +31,9 @@ class DenyAuthorizationController
     /**
      * Deny the authorization request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
      */
     public function deny(Request $request)
     {

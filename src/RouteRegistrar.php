@@ -3,6 +3,7 @@
 namespace Laravel\Passport;
 
 use Illuminate\Contracts\Routing\Registrar as Router;
+use Laravel\Passport\Http\Middleware\AuthorizeMiddleware;
 
 class RouteRegistrar
 {
@@ -48,7 +49,7 @@ class RouteRegistrar
         $this->router->group(['middleware' => ['web', 'auth']], function ($router) {
             $router->get('/authorize', [
                 'uses' => 'AuthorizationController@authorize',
-            ]);
+            ])->middleware(AuthorizeMiddleware::class);
 
             $router->post('/authorize', [
                 'uses' => 'ApproveAuthorizationController@approve',

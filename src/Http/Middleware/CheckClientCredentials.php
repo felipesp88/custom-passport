@@ -32,11 +32,12 @@ class CheckClientCredentials
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  mixed  ...$scopes
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
+     * @param  mixed ...$scopes
      * @return mixed
      * @throws \Illuminate\Auth\AuthenticationException
+     * @throws MissingScopeException
      */
     public function handle($request, Closure $next, ...$scopes)
     {

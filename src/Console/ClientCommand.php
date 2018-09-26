@@ -66,6 +66,10 @@ class ClientCommand extends Command
             null, $name, 'http://localhost'
         );
 
+        $client->secondary = $this->confirm('Is it a secondary client?', false);
+
+        $client->save();
+
         $this->info('Personal access client created successfully.');
         $this->line('<comment>Client ID:</comment> '.$client->id);
         $this->line('<comment>Client Secret:</comment> '.$client->secret);
@@ -87,6 +91,10 @@ class ClientCommand extends Command
         $client = $clients->createPasswordGrantClient(
             null, $name, 'http://localhost'
         );
+
+        $client->secondary = $this->confirm('Is it a secondary client?', false);
+
+        $client->save();
 
         $this->info('Password grant client created successfully.');
         $this->line('<comment>Client ID:</comment> '.$client->id);
@@ -118,6 +126,10 @@ class ClientCommand extends Command
             $userId, $name, $redirect
         );
 
+        $client->secondary = $this->confirm('Is it a secondary client?', false);
+
+        $client->save();
+
         $this->info('New client created successfully.');
         $this->line('<comment>Client ID:</comment> '.$client->id);
         $this->line('<comment>Client secret:</comment> '.$client->secret);
@@ -138,6 +150,10 @@ class ClientCommand extends Command
         $client = $clients->create(
             null, $name, ''
         );
+
+        $client->secondary = $this->confirm('Is it a secondary client?', false);
+
+        $client->save();
 
         $this->info('New client created successfully.');
         $this->line('<comment>Client ID:</comment> '.$client->id);

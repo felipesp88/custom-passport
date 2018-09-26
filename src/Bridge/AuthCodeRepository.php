@@ -43,7 +43,7 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
     public function persistNewAuthCode(AuthCodeEntityInterface $authCodeEntity)
     {
         $attributes = [
-            'id' => $authCodeEntity->getIdentifier(),
+            '_id' => $authCodeEntity->getIdentifier(),
             'user_id' => $authCodeEntity->getUserIdentifier(),
             'client_id' => $authCodeEntity->getClient()->getIdentifier(),
             'scopes' => $this->formatScopesForStorage($authCodeEntity->getScopes()),
@@ -60,7 +60,7 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
     public function revokeAuthCode($codeId)
     {
         $this->database->table('oauth_auth_codes')
-                    ->where('id', $codeId)->update(['revoked' => true]);
+                    ->where('_id', $codeId)->update(['revoked' => true]);
     }
 
     /**
@@ -69,6 +69,6 @@ class AuthCodeRepository implements AuthCodeRepositoryInterface
     public function isAuthCodeRevoked($codeId)
     {
         return $this->database->table('oauth_auth_codes')
-                    ->where('id', $codeId)->where('revoked', 1)->exists();
+                    ->where('_id', $codeId)->where('revoked', 1)->exists();
     }
 }
