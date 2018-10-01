@@ -2,6 +2,7 @@
 
 namespace Laravel\Passport\Traits;
 
+use Illuminate\Support\Facades\Config;
 use Laravel\Passport\Passport;
 use Lcobucci\JWT\Builder;
 use Lcobucci\JWT\Signer\Key;
@@ -22,6 +23,18 @@ trait AccessTokenTrait
      */
     public function convertToJWT(CryptKey $privateKey)
     {
+        $provider = Config::get('auth.guards.api.provider');
+        if (is_null($model = Config::get('auth.providers.'.$provider.'.model'))) {
+            throw new \RuntimeException('Unable to determine authentication model from configuration.');
+        }
+
+        $user = (new $model)->where('user_id', $this->getUserIdentifier())->first();
+        if (!$user) {
+            throw new \RuntimeException('Unable to find model with specific identifier.');
+        }
+
+        $roles = $user->roles->pluck('name')->toArray();
+
         return (new Builder())
             ->setAudience(implode(' ', array_prepend($this->getSecondaryAudiences(), $this->getClient()->getIdentifier())))
             ->setId($this->getIdentifier(), true)
@@ -30,6 +43,7 @@ trait AccessTokenTrait
             ->setExpiration($this->getExpiryDateTime()->getTimestamp())
             ->setSubject($this->getUserIdentifier())
             ->set('scopes', $this->getScopes())
+            ->set('roles', implode(' ', $roles))
             ->sign(new Sha256(), new Key($privateKey->getKeyPath(), $privateKey->getPassPhrase()))
             ->getToken();
     }

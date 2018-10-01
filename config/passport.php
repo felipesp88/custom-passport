@@ -12,13 +12,7 @@ return [
     | can be set via environment variables when that is more convenient.
     |
     */
-
     'private_key' => env('PASSPORT_PRIVATE_KEY'),
 
-    'public_key' => env('PASSPORT_PUBLIC_KEY'),
-
-    'special_claims' => [
-        //
-    ]
-
+    'public_key' => env('PASSPORT_PUBLIC_KEY')
 ];

@@ -2,7 +2,9 @@
 
 namespace Laravel\Passport;
 
+use Carbon\Carbon;
 use DateInterval;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\RequestGuard;
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Support\Facades\Auth;
@@ -35,6 +37,8 @@ class PassportServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'passport');
 
         $this->deleteCookieOnLogout();
+
+        $this->storeLoginTime();
 
         if ($this->app->runningInConsole()) {
             $this->registerMigrations();
@@ -287,6 +291,18 @@ class PassportServiceProvider extends ServiceProvider
             if (Request::hasCookie(Passport::cookie())) {
                 Cookie::queue(Cookie::forget(Passport::cookie()));
             }
+        });
+    }
+
+    /**
+     * Register the authentication time event handler.
+     *
+     * @return void
+     */
+    protected function storeLoginTime()
+    {
+        Event::listen(Login::class, function () {
+            Request::session()->put('auth_time', Carbon::now()->getTimestamp());
         });
     }
 
