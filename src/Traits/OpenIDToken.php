@@ -48,7 +48,7 @@ trait OpenIDToken
             ->set('email_verified', method_exists($user, 'hasVerifiedEmail') ? $user->hasVerifiedEmail() : false)
             ->set('gender', $user->gender ?? '')
             ->set('birthdate', optional($user->birthdate)->format('Y-M-D') ?? '')
-            ->set('phone_number', $user->phone ?? '')
+            ->set('phone_number', optional($user->phone)->formatted_phone ?? '')
             ->set('phone_number_verified', method_exists($user, 'hasVerifiedPhone') ? $user->hasVerifiedPhone() : false)
             ->set('address', $user->formatted_address)
             ->set('updated_at', $user->updated_at->getTimestamp());
