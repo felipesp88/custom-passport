@@ -1,16 +1,20 @@
 {
-    "name": "felipesp88/custom-passport",
+    "name": "z1lab/laravel-passport",
     "description": "Laravel Passport provides OpenIDConnect server support to Laravel with MongoDB Jenssegers.",
     "keywords": ["laravel", "passport", "oauth", "openid"],
     "license": "MIT",
     "support": {
-        "issues": "https://github.com/felipesp88/custom-passport/issues",
-        "source": "https://github.com/felipesp88/custom-passport"
+        "issues": "https://github.com/z1lab/laravel-passport/issues",
+        "source": "https://github.com/z1lab/laravel-passport"
     },
     "authors": [
         {
             "name": "Felipe Pinheiro",
             "email": "filipe-pinheiro@hotmail.com"
+        },
+        {
+            "name": "z1lab",
+            "email": "webmaster@z1lab.com.br"
         }
     ],
     "require": {
