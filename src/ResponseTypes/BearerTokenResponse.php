@@ -16,10 +16,12 @@ class BearerTokenResponse extends BearerResponse
      */
     protected function getExtraParams(AccessTokenEntityInterface $accessToken)
     {
-        if (in_array('openid', $accessToken->getScopes())) {
+        foreach ($accessToken->getScopes() as $scope) {
+            if ($scope->getIdentifier() === 'openid') {
 
-            return ['id_token' => $this->getOpenIDToken($accessToken->getUserIdentifier(),
-                $accessToken->getClient()->getIdentifier(), $accessToken->getExpiryDateTime()->getTimestamp())];
+                return ['id_token' => (string) $this->getOpenIDToken($accessToken->getUserIdentifier(),
+                    $accessToken->getClient()->getIdentifier(), $accessToken->getExpiryDateTime()->getTimestamp())];
+            }
         }
 
         return [];

@@ -27,8 +27,8 @@ class AuthorizeMiddleware
                 $query = parse_query(parse_url($location)['query']);
                 if (!isset($query['error'])
                     && in_array('id_token', explode(' ', $request->query('response_type')))) {
-                    $queryString = http_build_query(['id_token' =>
-                        $this->getOpenIDToken(\Auth::id(), $request->query('client_id'), Passport::$tokensExpireAt->getTimestamp())]);
+                    $queryString = http_build_query(['id_token' => (string)
+                        $this->getOpenIDToken(\Auth::user()->id, $request->query('client_id'), Passport::$tokensExpireAt->getTimestamp())]);
                     $response->headers->set('location', $location . "&$queryString");
                 }
             }

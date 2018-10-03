@@ -72,15 +72,6 @@ class AuthorizationController
             }
 
             return $this->approveRequest($authRequest, $user);
-
-//            $request->session()->put('authRequest', $authRequest);
-//
-//            return $this->response->view('passport::authorize', [
-//                'client' => $client,
-//                'user' => $user,
-//                'scopes' => $scopes,
-//                'request' => $request,
-//            ]);
         });
     }
 
