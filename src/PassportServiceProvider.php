@@ -3,18 +3,20 @@
 namespace Laravel\Passport;
 
 use DateInterval;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\RequestGuard;
 use Illuminate\Auth\Events\Logout;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Guards\TokenGuard;
+use Laravel\Passport\Server\AuthorizationServer;
 use League\OAuth2\Server\CryptKey;
 use League\OAuth2\Server\ResourceServer;
 use Illuminate\Config\Repository as Config;
-use League\OAuth2\Server\AuthorizationServer;
 use League\OAuth2\Server\Grant\AuthCodeGrant;
 use League\OAuth2\Server\Grant\ImplicitGrant;
 use League\OAuth2\Server\Grant\PasswordGrant;
@@ -35,6 +37,8 @@ class PassportServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'passport');
 
         $this->deleteCookieOnLogout();
+
+        $this->storeLoginTime();
 
         if ($this->app->runningInConsole()) {
             $this->registerMigrations();
@@ -195,7 +199,7 @@ class PassportServiceProvider extends ServiceProvider
     /**
      * Make the authorization service instance.
      *
-     * @return \League\OAuth2\Server\AuthorizationServer
+     * @return \Laravel\Passport\Server\AuthorizationServer
      */
     public function makeAuthorizationServer()
     {
@@ -284,6 +288,18 @@ class PassportServiceProvider extends ServiceProvider
             if (Request::hasCookie(Passport::cookie())) {
                 Cookie::queue(Cookie::forget(Passport::cookie()));
             }
+        });
+    }
+
+    /**
+     * Register the authentication time event handler.
+     *
+     * @return void
+     */
+    protected function storeLoginTime()
+    {
+        Event::listen(Login::class, function () {
+            Request::session()->put('auth_time', Carbon::now()->getTimestamp());
         });
     }
 

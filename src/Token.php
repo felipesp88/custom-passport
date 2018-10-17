@@ -3,9 +3,12 @@
 namespace Laravel\Passport;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Passport\Traits\UuidTrait;
 
 class Token extends Model
 {
+    use UuidTrait;
+
     /**
      * The database table used by the model.
      *
@@ -19,6 +22,13 @@ class Token extends Model
      * @var bool
      */
     public $incrementing = false;
+
+    /**
+     * The "type" of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'uuid';
 
     /**
      * The guarded attributes on the model.

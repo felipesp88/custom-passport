@@ -3,15 +3,32 @@
 namespace Laravel\Passport;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Passport\Traits\UuidTrait;
 
 class PersonalAccessClient extends Model
 {
+    use UuidTrait;
+
     /**
      * The database table used by the model.
      *
      * @var string
      */
     protected $table = 'oauth_personal_access_clients';
+
+    /**
+     * The "type" of the auto-incrementing ID.
+     *
+     * @var string
+     */
+    protected $keyType = 'uuid';
+
+    /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
 
     /**
      * The guarded attributes on the model.

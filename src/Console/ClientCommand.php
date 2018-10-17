@@ -66,6 +66,10 @@ class ClientCommand extends Command
             null, $name, 'http://localhost'
         );
 
+        $client->secondary = $this->confirm('Is it a secondary client?', false);
+
+        $client->save();
+
         $this->info('Personal access client created successfully.');
         $this->line('<comment>Client ID:</comment> '.$client->id);
         $this->line('<comment>Client Secret:</comment> '.$client->secret);
@@ -87,6 +91,10 @@ class ClientCommand extends Command
         $client = $clients->createPasswordGrantClient(
             null, $name, 'http://localhost'
         );
+
+        $client->secondary = $this->confirm('Is it a secondary client?', false);
+
+        $client->save();
 
         $this->info('Password grant client created successfully.');
         $this->line('<comment>Client ID:</comment> '.$client->id);
@@ -111,12 +119,16 @@ class ClientCommand extends Command
 
         $redirect = $this->ask(
             'Where should we redirect the request after authorization?',
-            url('/auth/callback')
+            url('/openid/callback')
         );
 
         $client = $clients->create(
             $userId, $name, $redirect
         );
+
+        $client->secondary = $this->confirm('Is it a secondary client?', false);
+
+        $client->save();
 
         $this->info('New client created successfully.');
         $this->line('<comment>Client ID:</comment> '.$client->id);
@@ -135,9 +147,18 @@ class ClientCommand extends Command
             'What should we name the client?'
         );
 
-        $client = $clients->create(
-            null, $name, ''
+        $redirect = $this->ask(
+            'Where should we redirect the request after authorization?',
+            url('/openid/callback')
         );
+
+        $client = $clients->create(
+            null, $name, $redirect
+        );
+
+        $client->secondary = $this->confirm('Is it a secondary client?', false);
+
+        $client->save();
 
         $this->info('New client created successfully.');
         $this->line('<comment>Client ID:</comment> '.$client->id);

@@ -2,11 +2,11 @@
 
 namespace Laravel\Passport\Http\Controllers;
 
+use Laravel\Passport\Server\AuthorizationServer;
 use Laravel\Passport\TokenRepository;
 use Lcobucci\JWT\Parser as JwtParser;
 use Psr\Http\Message\ServerRequestInterface;
 use Zend\Diactoros\Response as Psr7Response;
-use League\OAuth2\Server\AuthorizationServer;
 
 class AccessTokenController
 {
@@ -15,7 +15,7 @@ class AccessTokenController
     /**
      * The authorization server.
      *
-     * @var \League\OAuth2\Server\AuthorizationServer
+     * @var \Laravel\Passport\Server\AuthorizationServer
      */
     protected $server;
 
@@ -36,7 +36,7 @@ class AccessTokenController
     /**
      * Create a new controller instance.
      *
-     * @param  \League\OAuth2\Server\AuthorizationServer  $server
+     * @param  \Laravel\Passport\Server\AuthorizationServer  $server
      * @param  \Laravel\Passport\TokenRepository  $tokens
      * @param  \Lcobucci\JWT\Parser  $jwt
      * @return void

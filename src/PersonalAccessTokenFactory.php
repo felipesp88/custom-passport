@@ -2,17 +2,17 @@
 
 namespace Laravel\Passport;
 
+use Laravel\Passport\Server\AuthorizationServer;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequest;
 use Lcobucci\JWT\Parser as JwtParser;
-use League\OAuth2\Server\AuthorizationServer;
 
 class PersonalAccessTokenFactory
 {
     /**
      * The authorization server instance.
      *
-     * @var \League\OAuth2\Server\AuthorizationServer
+     * @var \Laravel\Passport\Server\AuthorizationServer
      */
     protected $server;
 
@@ -40,7 +40,7 @@ class PersonalAccessTokenFactory
     /**
      * Create a new personal access token factory instance.
      *
-     * @param  \League\OAuth2\Server\AuthorizationServer  $server
+     * @param  \Laravel\Passport\Server\AuthorizationServer  $server
      * @param  \Laravel\Passport\ClientRepository  $clients
      * @param  \Laravel\Passport\TokenRepository  $tokens
      * @param  \Lcobucci\JWT\Parser  $jwt
