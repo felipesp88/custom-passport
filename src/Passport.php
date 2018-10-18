@@ -44,7 +44,7 @@ class Passport
      * @var array
      */
     public static $scopes = [
-        //
+        'openid' => 'OpenID Token'
     ];
 
     /**
@@ -256,7 +256,7 @@ class Passport
      */
     public static function tokensCan(array $scopes)
     {
-        static::$scopes = array_merge(['openid' => 'OpenID Token'], static::$scopes);
+        static::$scopes = array_merge($scopes, static::$scopes);
     }
 
     /**
