@@ -38,8 +38,7 @@ trait AccessTokenTrait
         if (!$user) {
             throw new \RuntimeException('Unable to find model with specific identifier.');
         }
-        $roles = $user->roles->pluck('name')->toArray();
-
+        
         return (new Builder())
             ->setAudience($this->getClient()->getIdentifier() . (empty($secondary) ? '' : (' ' . $secondary)))
             ->setId($this->getIdentifier(), true)
@@ -48,7 +47,6 @@ trait AccessTokenTrait
             ->setExpiration($this->getExpiryDateTime()->getTimestamp())
             ->setSubject($user->user_id)
             ->set('scopes', $this->getScopes())
-            ->set('roles', implode(' ', $roles))
             ->sign(new Sha256(), new Key($privateKey->getKeyPath(), $privateKey->getPassPhrase()))
             ->getToken();
     }
