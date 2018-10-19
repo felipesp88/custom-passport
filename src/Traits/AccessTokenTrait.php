@@ -46,7 +46,7 @@ trait AccessTokenTrait
             ->setIssuedAt(time())
             ->setNotBefore(time())
             ->setExpiration($this->getExpiryDateTime()->getTimestamp())
-            ->setSubject($this->getUserIdentifier())
+            ->setSubject($user->user_id)
             ->set('scopes', $this->getScopes())
             ->set('roles', implode(' ', $roles))
             ->sign(new Sha256(), new Key($privateKey->getKeyPath(), $privateKey->getPassPhrase()))

@@ -36,6 +36,9 @@ trait OpenIDTokenTrait
         if (!$user) {
             throw new \RuntimeException('Unable to find model with specific identifier.');
         }
+
+        $roles = $user->roles->pluck('name')->toArray();
+
         $token = (new Builder())->setIssuer(env('APP_URL'))
             ->setIssuer(env('APP_URL'))
             ->setSubject($user->user_id)
@@ -56,13 +59,14 @@ trait OpenIDTokenTrait
             ->set('phone_number', optional($user->phone)->formatted_phone)
             ->set('phone_number_verified', method_exists($user->phone, 'hasVerifiedPhone') ? $user->phone->hasVerifiedPhone() : false)
             ->set('address', $user->formatted_address)
+            ->set('roles', implode(' ', $roles))
             ->set('updated_at', $user->updated_at->getTimestamp());
 
         if (Request::has('nonce')) {
             $token = $token->set('nonce', Request::get('nonce'));
         }
 
-        return $token->sign(new Sha256(), new Key('file://'. Passport::keyPath('oauth-private_key')))
+        return $token->sign(new Sha256(), new Key('file://' . Passport::keyPath('oauth-private.key')))
             ->getToken();
     }
 
