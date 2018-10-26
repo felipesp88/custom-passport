@@ -17,4 +17,5 @@ return [
 
     'public_key' => env('PASSPORT_PUBLIC_KEY'),
 
+    'user_class' => 'App\User',
 ];

@@ -57,11 +57,11 @@ class TokenGuard
     /**
      * Create a new token guard instance.
      *
-     * @param  \League\OAuth2\Server\ResourceServer  $server
-     * @param  \Illuminate\Contracts\Auth\UserProvider  $provider
-     * @param  \Laravel\Passport\TokenRepository  $tokens
-     * @param  \Laravel\Passport\ClientRepository  $clients
-     * @param  \Illuminate\Contracts\Encryption\Encrypter  $encrypter
+     * @param  \League\OAuth2\Server\ResourceServer       $server
+     * @param  \Illuminate\Contracts\Auth\UserProvider    $provider
+     * @param  \Laravel\Passport\TokenRepository          $tokens
+     * @param  \Laravel\Passport\ClientRepository         $clients
+     * @param  \Illuminate\Contracts\Encryption\Encrypter $encrypter
      * @return void
      */
     public function __construct(ResourceServer $server,
@@ -80,7 +80,7 @@ class TokenGuard
     /**
      * Get the user for the incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return mixed
      */
     public function user(Request $request)
@@ -93,9 +93,20 @@ class TokenGuard
     }
 
     /**
+     * @param $id
+     * @return \Illuminate\Contracts\Auth\Authenticatable|null
+     */
+    protected function retrieveById($id)
+    {
+        $userClass = config('passport.user_class');
+
+        return (new $userClass)->where('user_id', $id)->first();
+    }
+
+    /**
      * Authenticate the incoming request via the Bearer token.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return mixed
      */
     protected function authenticateViaBearerToken($request)
@@ -111,11 +122,9 @@ class TokenGuard
             // If the access token is valid we will retrieve the user according to the user ID
             // associated with the token. We will use the provider implementation which may
             // be used to retrieve users from Eloquent. Next, we'll be ready to continue.
-            $user = $this->provider->retrieveById(
-                $psr->getAttribute('oauth_user_id')
-            );
+            $user = $this->retrieveById($psr->getAttribute('oauth_user_id'));
 
-            if (! $user) {
+            if (!$user) {
                 return;
             }
 
@@ -135,9 +144,9 @@ class TokenGuard
                 return;
             }
 
-            return $token ? $user->withAccessToken($token) : null;
+            return $token ? $user->withAccessToken($token) : NULL;
         } catch (OAuthServerException $e) {
-            $request->headers->set( 'Authorization', '', true );
+            $request->headers->set('Authorization', '', TRUE);
 
             Container::getInstance()->make(
                 ExceptionHandler::class
@@ -148,7 +157,7 @@ class TokenGuard
     /**
      * Authenticate the incoming request via the token cookie.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return mixed
      */
     protected function authenticateViaCookie($request)
@@ -165,15 +174,15 @@ class TokenGuard
         // We will compare the CSRF token in the decoded API token against the CSRF header
         // sent with the request. If the two don't match then this request is sent from
         // a valid source and we won't authenticate the request for further handling.
-        if (! Passport::$ignoreCsrfToken && (! $this->validCsrf($token, $request) ||
-            time() >= $token['expiry'])) {
+        if (!Passport::$ignoreCsrfToken && (!$this->validCsrf($token, $request) ||
+                time() >= $token['expiry'])) {
             return;
         }
 
         // If this user exists, we will return this user and attach a "transient" token to
         // the user model. The transient token assumes it has all scopes since the user
         // is physically logged into the application via the application's interface.
-        if ($user = $this->provider->retrieveById($token['sub'])) {
+        if ($user = $this->retrieveById($token['sub'])) {
             return $user->withAccessToken(new TransientToken);
         }
     }
@@ -181,12 +190,12 @@ class TokenGuard
     /**
      * Decode and decrypt the JWT token cookie.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  \Illuminate\Http\Request $request
      * @return array
      */
     protected function decodeJwtTokenCookie($request)
     {
-        return (array) JWT::decode(
+        return (array)JWT::decode(
             $this->encrypter->decrypt($request->cookie(Passport::cookie()), Passport::$unserializesCookies),
             $this->encrypter->getKey(), ['HS256']
         );
@@ -195,14 +204,14 @@ class TokenGuard
     /**
      * Determine if the CSRF / header are valid and match.
      *
-     * @param  array  $token
-     * @param  \Illuminate\Http\Request  $request
+     * @param  array                    $token
+     * @param  \Illuminate\Http\Request $request
      * @return bool
      */
     protected function validCsrf($token, $request)
     {
         return isset($token['csrf']) && hash_equals(
-            $token['csrf'], (string) $request->header('X-CSRF-TOKEN')
-        );
+                $token['csrf'], (string)$request->header('X-CSRF-TOKEN')
+            );
     }
 }
