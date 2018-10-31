@@ -55,7 +55,7 @@ trait OpenIDTokenTrait
             ->set('email', $user->email)
             ->set('email_verified', method_exists($user, 'hasVerifiedEmail') ? $user->hasVerifiedEmail() : false)
             ->set('gender', $user->gender)
-            ->set('birthdate', optional($user->birthdate)->format('Y-M-D'))
+            ->set('birthdate', optional($user->birth_date)->format('Y-M-D'))
             ->set('phone_number', optional($user->phone)->formatted_phone)
             ->set('phone_number_verified', method_exists($user->phone, 'hasVerifiedPhone') ? $user->phone->hasVerifiedPhone() : false)
             ->set('address', $user->formatted_address)
