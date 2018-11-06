@@ -40,6 +40,7 @@ trait AccessTokenTrait
         }
         
         return (new Builder())
+            ->setIssuer(str_finish(env('APP_URL'), '/'))
             ->setAudience($this->getClient()->getIdentifier() . (empty($secondary) ? '' : (' ' . $secondary)))
             ->setId($this->getIdentifier(), true)
             ->setIssuedAt(time())

@@ -274,7 +274,7 @@ class PassportServiceProvider extends ServiceProvider
                 $this->app->make(ClientRepository::class),
                 $this->app->make('encrypter')
             ))->user($request);
-        }, $this->app['request']);
+        }, $this->app['request'], Auth::createUserProvider($config['provider']));
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace Laravel\Passport;
 
+use Carbon\Carbon;
 use Laravel\Passport\Server\AuthorizationServer;
 use Zend\Diactoros\Response;
 use Zend\Diactoros\ServerRequest;
@@ -75,6 +76,7 @@ class PersonalAccessTokenFactory
             $this->tokens->save($token->forceFill([
                 'user_id' => $userId,
                 'name' => $name,
+                'expires_at' => Carbon::now()->addMinutes(3)
             ]));
         });
 

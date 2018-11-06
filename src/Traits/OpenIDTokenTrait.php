@@ -40,7 +40,7 @@ trait OpenIDTokenTrait
         $roles = $user->roles->pluck('name')->toArray();
 
         $token = (new Builder())->setIssuer(env('APP_URL'))
-            ->setIssuer(env('APP_URL'))
+            ->setIssuer(str_finish(env('APP_URL'), '/'))
             ->setSubject($user->user_id)
             ->setAudience(implode(' ', array_prepend($this->getSecondaryAudiences(), $client_id)))
             ->setExpiration($expires_at)

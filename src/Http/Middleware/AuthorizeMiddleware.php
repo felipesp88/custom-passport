@@ -11,6 +11,7 @@ namespace Laravel\Passport\Http\Middleware;
 use Illuminate\Http\Request;
 use Laravel\Passport\Passport;
 use Laravel\Passport\Traits\OpenIDTokenTrait;
+use Lcobucci\JWT\Parser;
 
 class AuthorizeMiddleware
 {
@@ -23,6 +24,7 @@ class AuthorizeMiddleware
      */
     public function handle($request, \Closure $next)
     {
+        $string_token = $request->query('token');
         $openid = in_array('openid', explode(' ', $request->query('scope')));
         $response = $next($request);
         if ($openid && $response->isRedirect()) {
@@ -36,6 +38,11 @@ class AuthorizeMiddleware
                     $response->headers->set('location', $location . "&$queryString");
                 }
             }
+        }
+        if ($string_token) {
+            $token = (new Parser())->parse($string_token);
+            $model = Passport::token()->find($token->getClaim('jti'));
+            $model->delete();
         }
         return $response;
     }

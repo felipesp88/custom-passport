@@ -98,9 +98,12 @@ class TokenGuard
      */
     protected function retrieveById($id)
     {
-        $userClass = config('passport.user_class');
+        $provider = config('auth.guards.api.provider');
+        if (is_null($model = config('auth.providers.'.$provider.'.model'))) {
+            throw new \RuntimeException('Unable to determine authentication model from configuration.');
+        }
 
-        return (new $userClass)->where('user_id', $id)->first();
+        return (new $model)->where('user_id', $id)->first();
     }
 
     /**
