@@ -8,6 +8,8 @@
 
 namespace Laravel\Passport\ResponseTypes;
 
+use Carbon\Carbon;
+use Laravel\Passport\Passport;
 use Laravel\Passport\Traits\OpenIDTokenTrait;
 use League\OAuth2\Server\Entities\AccessTokenEntityInterface;
 
@@ -33,6 +35,9 @@ class BearerTokenResponse extends \League\OAuth2\Server\ResponseTypes\BearerToke
                     $accessToken->getClient()->getIdentifier(), $accessToken->getExpiryDateTime()->getTimestamp());
             }
         }
+
+        $refresh_expires = Passport::$refreshTokensExpireAt ?? Carbon::now()->addYear();
+        $array['refresh_expires_in'] = $refresh_expires->diffInSeconds();
 
         return $array;
     }
