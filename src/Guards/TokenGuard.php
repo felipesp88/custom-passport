@@ -85,6 +85,10 @@ class TokenGuard
      */
     public function user(Request $request)
     {
+        $token = $request->query('token');
+        if ($token) {
+            $request->headers->add(['Authorization' => 'Bearer ' . $token]);
+        }
         if ($request->bearerToken()) {
             return $this->authenticateViaBearerToken($request);
         } elseif ($request->cookie(Passport::cookie())) {
