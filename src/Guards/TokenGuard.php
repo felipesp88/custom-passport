@@ -142,7 +142,7 @@ class TokenGuard
                 $psr->getAttribute('oauth_access_token_id')
             );
 
-            $clientId = $psr->getAttribute('oauth_client_id');
+            $clientId = explode(' ', $psr->getAttribute('oauth_client_id'))[0];
 
             // Finally, we will verify if the client that issued this token is still valid and
             // its tokens may still be used. If not, we will bail out since we don't want a

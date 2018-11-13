@@ -75,6 +75,6 @@ trait OpenIDTokenTrait
      */
     public function getSecondaryAudiences()
     {
-        return Passport::client()->where('secondary', true)->get()->pluck('_id')->toArray();
+        return Passport::client()->where('secondary', true)->get()->pluck('id')->toArray();
     }
 }
