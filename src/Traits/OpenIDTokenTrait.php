@@ -51,6 +51,7 @@ trait OpenIDTokenTrait
             ->set('social_name', $user->social_name)
             ->set('nickname', $user->nickname)
             ->set('preferred_username', $user->username)
+            ->set('document', $user->document)
             ->set('picture', $user->avatar)
             ->set('email', $user->email)
             ->set('email_verified', method_exists($user, 'hasVerifiedEmail') ? $user->hasVerifiedEmail() : false)
