@@ -37,6 +37,7 @@ class CheckClientCredentials
      * @param  mixed  ...$scopes
      * @return mixed
      * @throws \Illuminate\Auth\AuthenticationException
+     * @throws MissingScopeException
      */
     public function handle($request, Closure $next, ...$scopes)
     {

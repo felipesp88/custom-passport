@@ -35,9 +35,6 @@ trait AccessTokenTrait
             throw new \RuntimeException('Unable to determine authentication model from configuration.');
         }
         $user = (new $model)->find($this->getUserIdentifier());
-        if (!$user) {
-            throw new \RuntimeException('Unable to find model with specific identifier.');
-        }
         
         return (new Builder())
             ->setIssuer(str_finish(env('APP_URL'), '/'))
@@ -46,7 +43,7 @@ trait AccessTokenTrait
             ->setIssuedAt(time())
             ->setNotBefore(time())
             ->setExpiration($this->getExpiryDateTime()->getTimestamp())
-            ->setSubject($user->user_id)
+            ->setSubject(optional($user)->user_id)
             ->set('scopes', $this->getScopes())
             ->sign(new Sha256(), new Key($privateKey->getKeyPath(), $privateKey->getPassPhrase()))
             ->getToken();
