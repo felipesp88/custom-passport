@@ -2,7 +2,9 @@
 
 namespace Laravel\Passport\Http\Controllers;
 
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use Laravel\Passport\Passport;
 use Laravel\Passport\Bridge\User;
 use Laravel\Passport\Server\AuthorizationServer;
@@ -104,6 +106,8 @@ class AuthorizationController
         $authRequest->setUser(new User($user->getKey()));
 
         $authRequest->setAuthorizationApproved(true);
+
+        Cookie::queue('auth_time', now()->getTimestamp(), Carbon::now()->addMonth()->diffInMinutes());
 
         return $this->convertResponse(
             $this->server->completeAuthorizationRequest($authRequest, new Psr7Response)
