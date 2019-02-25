@@ -41,8 +41,10 @@ class AuthorizeMiddleware
         }
         if ($string_token) {
             $token = (new Parser())->parse($string_token);
-            $model = Passport::token()->find($token->getClaim('jti'));
-            $model->delete();
+            if (empty($token->getClaim('scopes', []))) {
+                $model = Passport::token()->find($token->getClaim('jti'));
+                $model->delete();
+            }
         }
         return $response;
     }
