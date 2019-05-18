@@ -35,9 +35,9 @@ trait AccessTokenTrait
             throw new \RuntimeException('Unable to determine authentication model from configuration.');
         }
         $user = (new $model)->find($this->getUserIdentifier());
-        
+
         return (new Builder())
-            ->setIssuer(str_finish(env('APP_URL'), '/'))
+            ->setIssuer(str_finish(config('app.url'), '/'))
             ->setAudience($this->getClient()->getIdentifier() . (empty($secondary) ? '' : (' ' . $secondary)))
             ->setId($this->getIdentifier(), true)
             ->setIssuedAt(time())
